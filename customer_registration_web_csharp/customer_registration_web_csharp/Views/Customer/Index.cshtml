@@ -2,15 +2,18 @@
     ViewData["Title"] = "Login Page";
     Layout = "_Layout";
 }
+
+@model List<Customer>
+
 <link rel="stylesheet" href="~/css/customer.css" asp-append-version="true" />
 
  <section class="content">
     <div class="search-card">
         <h3>Pesquisar clientes</h3>
-        <form class="search-form" onsubmit="pesquisar(event)">
+        <form class="search-form" asp-action="Index" asp-controller="Customer">
             <div class="form-group">
                 <label for="nome">Nome do cliente</label>
-                <input type="text" id="nome" placeholder="Digite o nome do cliente...">
+                <input name="name" type="text" id="nome" placeholder="Digite o nome do cliente...">
             </div>
             <button type="submit" class="btn btn-primary">🔍 Pesquisar</button>
         </form>
@@ -36,19 +39,26 @@
                     </tr>
                 </thead>
                 <tbody id="listaClientes">
-                    <tr>
-                        <td>001</td>
-                        <td>João da Silva</td>
-                        <td>12.345.678-9</td>
-                        <td>123.456.789-00</td>
-                        <td><span class="status active-status">Ativo</span></td>
-                        <td>
-                            <div class="actions">
-                                <button class="btn-action btn-edit" onclick="editarCliente(1)">Editar</button>
-                                <button class="btn-action btn-delete" onclick="excluirCliente(1)">Excluir</button>
-                            </div>
-                        </td>
-                    </tr>                                              
+                    @if (Model.Count  > 0)
+                    {
+                        @foreach (Customer item in Model)
+                        {
+                            <tr>
+                                <td>@item.id</td>
+                                <td>@item.name</td>
+                                <td>@item.rg</td>
+                                <td>@item.cpf</td>
+                                <td><span class="status active-status">Ativo</span></td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn-action btn-edit" onclick="editarCliente(@item.id)">Editar</button>
+                                        <button class="btn-action btn-delete" onclick="excluirCliente(@item.id)">Excluir</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                                                                 
                 </tbody>
             </table>  
         </div>
@@ -62,5 +72,5 @@
         </div>
     </div>
 </section>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/js/customer.js" asp-append-version="true"></script>

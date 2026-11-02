@@ -14,7 +14,7 @@
     <div class="login-form">
         <h2>Bem-vindo!</h2>
         <p class="subtitle">Entre com suas credenciais para continuar.</p>
-        <form action="/Account/Login" method="post">
+        <form asp-action="Index" asp-controller="Login" method="post">
             <div class="form-group">
                 <label for="username">Usuário</label>
                 <input type="text" id="username" name="username" value="Admin" placeholder="Digite seu usuário" autocomplete="username" required>
@@ -23,10 +23,22 @@
                 <label for="password">Senha</label>
                 <input id="password" type="password" name="password" value="123456" placeholder="Digite sua senha" autocomplete="current-password" required>
             </div>
-            <button type="button" class="btn-login"  onclick="window.location.href='@Url.Action("Index", "Home")'">Entrar</button>
+            <button type="submit" class="btn-login">Entrar</button>
         </form>
         <div class="footer">
             © 2026 Customer System. Todos os direitos reservados.
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if (TempData["Mensagem"] != null)
+{
+    <script>
+       Swal.fire({
+            title: 'Informação',
+            text: 'Usuário não encontrado!',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    </script>
+}

@@ -14,25 +14,7 @@ function sair() {
     window.location.href = "/Account/Logout";
 }
 
-function pesquisar(event) {
-        event.preventDefault();
 
-        const nome = document.getElementById("nome").value.toLowerCase();
-        const linhas = document.querySelectorAll("#listaClientes tr");
-
-        let total = 0;
-
-        linhas.forEach(linha => {
-            const nomeCliente = linha.cells[1].textContent.toLowerCase();
-            const encontrado = nomeCliente.includes(nome);
-
-            linha.style.display = encontrado ? "" : "none";
-
-            if (encontrado) total++;
-        });
-
-        document.getElementById("total").textContent = total;
-    }
 
 function limpar() {
     document.querySelectorAll("#listaClientes tr").forEach(linha => {
@@ -47,13 +29,42 @@ function novoCliente() {
 }
 
 function editarCliente(id) {
-    window.location.href = "/Customer/Edit/" + id;
+         Swal.fire({
+        title: 'Confirma?',
+        text: 'Deseja editar este cliente?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            window.location.href = "/Customer/Index?codigo=" + id + "&trigger=edit";
+        }
+
+    });
 }
 
 function excluirCliente(id) {
-    if (confirm("Deseja realmente excluir este cliente?")) {
-        window.location.href = "/Customer/Delete/" + id;
-    }
+
+     Swal.fire({
+        title: 'Confirma a exclusão?',
+        text: 'Deseja realmente excluir este cliente?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            window.location.href = "/Customer/Index?codigo=" + id + "&trigger=delete";
+        }
+
+    });
 }
 
      

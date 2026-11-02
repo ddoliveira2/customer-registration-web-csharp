@@ -27,13 +27,14 @@ namespace customer_registration_web_csharp.Dal
                 throw ex;
             }
         }
-        public List<Customer> GetListCustomer(string name, string rg, string cpf)
+        public List<Customer> GetListCustomer(string name)
         {
             try
             {
                 using (var conn = new SqlServerContext())
                 {
-                    return conn.Customer.Where(i => i.name.Contains(name) && i.rg.Contains(rg) && cpf.Contains(cpf)).ToList();
+                    var i = conn.Customer.Count();
+                    return conn.Customer.Where(i => i.name.Contains(name)).ToList();
                 }
             }
             catch (Exception ex)
