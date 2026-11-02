@@ -1,4 +1,11 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function abrirClientes() {
+    window.location.href = "/Customer/index";
+}
 
-// Write your JavaScript code.
+function abrirHome() {
+    window.location.href = "/Home/index";
+}
+
+function sair() {
+    window.location.href = "/Login/index";
+}

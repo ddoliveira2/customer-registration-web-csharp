@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/customer.css" asp-append-version="true" />
+
+ <section class="content">
+    <div class="search-card">
+        <h3>Pesquisar clientes</h3>
+        <form class="search-form" onsubmit="pesquisar(event)">
+            <div class="form-group">
+                <label for="nome">Nome do cliente</label>
+                <input type="text" id="nome" placeholder="Digite o nome do cliente...">
+            </div>
+            <button type="submit" class="btn btn-primary">🔍 Pesquisar</button>
+        </form>
+    </div>
+    <div class="grid-card">
+        <div class="grid-header">
+            <div>
+                <h3>Lista de clientes</h3>
+                <span>Clientes encontrados: <strong id="total">5</strong></span>
+            </div>
+            <button class="btn btn-success" onclick="novoCliente()">+ Novo cliente</button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>RG</th>
+                        <th>CPF</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaClientes">
+                    <tr>
+                        <td>001</td>
+                        <td>João da Silva</td>
+                        <td>12.345.678-9</td>
+                        <td>123.456.789-00</td>
+                        <td><span class="status active-status">Ativo</span></td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-action btn-edit" onclick="editarCliente(1)">Editar</button>
+                                <button class="btn-action btn-delete" onclick="excluirCliente(1)">Excluir</button>
+                            </div>
+                        </td>
+                    </tr>                                              
+                </tbody>
+            </table>  
+        </div>
+        <div class="pagination">
+            <span>Exibindo 1 a 5 de 5 registros</span>
+            <div class="pagination-buttons">
+                <button disabled>‹</button>
+                <button class="active">1</button>
+                <button disabled>›</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/customer.js" asp-append-version="true"></script>
