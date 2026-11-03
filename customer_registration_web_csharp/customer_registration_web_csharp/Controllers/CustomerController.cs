@@ -51,7 +51,7 @@ namespace customer_registration_web_csharp.Controllers
 
             if (Int64.TryParse(codigo, out Int64 _id))
             {
-                _objCustomer = _dal.GetOneCustome(_id);
+                _objCustomer = _dal.GetOneCustome(codigo);
             }
             return View(_objCustomer);
         }

@@ -12,15 +12,22 @@ namespace customer_registration_web_csharp.Dal
 {
     public class CustomerDal
     {
-        public Customer GetOneCustome(Int64 id)
+        private SqlServerConnection _conn;
+        private string _sql;
+        public CustomerDal()
+        {
+            _conn = new SqlServerConnection();
+
+        }
+
+        public Customer GetOneCustome(string id)
         {
             try
             {
-                using (var conn = new SqlServerContext())
-                {
+                _sql = "Select * from customer where id =" + id;
 
-                    return conn.Customer.FirstOrDefault(i => i.id == id);
-                }
+                List<Customer> data = _conn.GetTable<Customer>(_sql);
+                return data.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -31,11 +38,9 @@ namespace customer_registration_web_csharp.Dal
         {
             try
             {
-                using (var conn = new SqlServerContext())
-                {
-                    var i = conn.Customer.Count();
-                    return conn.Customer.Where(i => i.name.Contains(name)).ToList();
-                }
+                _sql = "Select * from customer where name like '%" + name + "%'";
+
+                return  _conn.GetTable<Customer>(_sql);
             }
             catch (Exception ex)
             {
@@ -45,51 +50,61 @@ namespace customer_registration_web_csharp.Dal
 
         public Customer CreateCustomer(Customer obj)
         {
-            Customer insert = new Customer();
-            using (var conn = new SqlServerContext())
+            try
             {
-                insert.name = obj.name;
-                insert.rg = obj.rg;
-                insert.cpf = obj.cpf;
-                insert.status = true;
-                conn.Customer.Add(insert);
-                conn.SaveChanges();
-                return insert;
-            }
+                obj.status = true;
+                _sql = "Insert Into customer (name,rg,cpf,status) values (@name,@rg,@cpf,@status)";
+                _conn.ExecuteSql(_sql, obj);
 
+                _sql = "SELECT TOP 1 * FROM Customer ORDER BY id DESC";
+                List<Customer> data = _conn.GetTable<Customer>(_sql);
+                return data.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
         public Customer UpdateCustomer(Int64 id, Customer obj)
         {
-            using (var conn = new SqlServerContext())
+
+            try
             {
-                Customer selected = conn.Customer.FirstOrDefault(i => i.id == id);
-                if (selected != null)
-                {
-                    selected.name = obj.name;
-                    selected.rg = obj.rg;
-                    selected.cpf = obj.cpf;
-                    selected.status = obj.status;
-                    conn.SaveChanges();
-                }
-                return selected;
+                obj.status = true;
+                obj.id = id;
+                _sql = "Update customer set name=@name,rg=@rg,cpf=@cpf,status=@status where id = @id";
+                _conn.ExecuteSql(_sql, obj);
+
+                _sql = "SELECT TOP 1 * FROM Customer where id = " + id.ToString();
+                List<Customer> data = _conn.GetTable<Customer>(_sql);
+                return data.FirstOrDefault();
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
 
         }
 
         public Customer DeleteCustomer(Int64 id)
         {
-            using (var conn = new SqlServerContext())
+            try
             {
-                Customer delete = conn.Customer.FirstOrDefault(i => i.id == id);
-                if (delete != null)
-                {
-                    conn.Customer.Remove(delete);
-                    conn.SaveChanges();
-                }
-                return delete;
+                _sql = "Delete from customer where id = @id";
+                _conn.ExecuteSql(_sql, new Customer { id=id});
+
+                _sql = "SELECT TOP 1 * FROM Customer where id = " + id.ToString();
+                List<Customer> data = _conn.GetTable<Customer>(_sql);
+                return data.FirstOrDefault();
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }
